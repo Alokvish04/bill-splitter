@@ -110,14 +110,14 @@ You must handle these cases and talk about them in your video:
 
 This is a pnpm workspace. Install once at the root.
 
-```bash
+```
 pnpm install
 pnpm dev          # api on :8787 and web on :5173
 ```
 
-Open http://localhost:5173. The starter page shows a title. `/api/health` returns `{ "status": "ok" }`.
+Open [http://localhost:5173](http://localhost:5173). The starter page shows a title. `/api/health` returns `{ "status": "ok" }`.
 
-```bash
+```
 pnpm test         # run the visible tests in api/test
 pnpm check        # Biome: format and lint. Must pass.
 pnpm check:fix    # fix what Biome can fix
@@ -131,7 +131,7 @@ If pnpm says some build scripts were ignored, run `pnpm approve-builds` and allo
 
 When you change `api/wrangler.jsonc`, refresh the `Env` types:
 
-```bash
+```
 pnpm --filter bill-splitter-api cf-typegen
 ```
 
@@ -143,8 +143,7 @@ pnpm --filter bill-splitter-api cf-typegen
 
 ## AI policy
 
-You can use AI tools. Tell us which ones and where in your answers on the form.
-You must understand every line you submit. We check this with your video and in a live call. "The AI wrote it" is not an answer.
+You can use AI tools. Tell us which ones and where in your answers on the form. You must understand every line you submit. We check this with your video and in a live call. "The AI wrote it" is not an answer.
 
 ## How to submit
 
@@ -155,3 +154,18 @@ You must understand every line you submit. We check this with your video and in 
 5. Paste the repository link and the video link in the application form.
 
 We will run `pnpm install && pnpm check && pnpm typecheck && pnpm test` on your repository.
+
+---
+
+## Decisions
+
+1. **Money is stored as integer cents.** Floats can't represent amounts like 0.10
+   exactly, so the split uses integer math: everyone gets `floor(total / n)`, and the
+   first `total % n` members, in the order they were added, get one extra cent. The
+   shares always add up to the total. On the web page, the amount the user types is
+   parsed from text into cents without using floats.
+
+2. **Paying is one atomic conditional UPDATE** (`WHERE paid_at IS NULL`), not
+   read-then-write. If two requests arrive at the same time, only one can match the
+   row. The share stores the `Idempotency-Key` it was paid with: the same key again
+   returns the same `200`, and a different key gets `409`. The web page
