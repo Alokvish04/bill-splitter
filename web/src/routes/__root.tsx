@@ -1,5 +1,17 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
+import '../styles.css'
 
 export const Route = createRootRoute({
-  component: () => <Outlet />,
+  component: RootLayout,
 })
+
+function RootLayout() {
+  return (
+    <main className="app">
+      <h1>
+        <Link to="/">Bill Splitter</Link>
+      </h1>
+      <Outlet />
+    </main>
+  )
+}

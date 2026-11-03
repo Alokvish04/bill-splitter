@@ -1,0 +1,66 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #f6f7f9;
+  color: #1c1f24;
+}
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+.card {
+  background: #fff;
+  border: 1px solid #dfe2e7;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.row.between {
+  justify-content: space-between;
+}
+input {
+  padding: 8px;
+  border: 1px solid #b8bec8;
+  border-radius: 6px;
+  font: inherit;
+}
+button {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 6px;
+  background: #2457d6;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+button:disabled {
+  background: #9aa5bd;
+  cursor: not-allowed;
+}
+.error {
+  color: #b3261e;
+  margin: 8px 0 0;
+}
+.muted {
+  color: #5f6673;
+}
+.paid {
+  color: #1b7f3b;
+  font-weight: 600;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+}
+li {
+  padding: 6px 0;
+  border-top: 1px solid #eef0f3;
+}
