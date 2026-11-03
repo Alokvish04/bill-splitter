@@ -50,6 +50,9 @@ export async function request<T>(
       signal: controller.signal,
     })
     const data: unknown = await response.json().catch(() => null)
+    if (response.status === 502 || response.status === 503 || response.status === 504) {
+      throw new ApiError('The server is unavailable right now. Please try again.', response.status)
+    }
     if (!response.ok) {
       throw new ApiError(errorMessage(data, `Request failed (${response.status})`), response.status)
     }
